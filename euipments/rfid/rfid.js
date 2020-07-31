@@ -1,4 +1,3 @@
-// Copyright (C) 2020 beautyOps Inc. All rights reserved.
 /* eslint-disable no-await-in-loop */
 
 import RegexParser from '@serialport/parser-regex';
