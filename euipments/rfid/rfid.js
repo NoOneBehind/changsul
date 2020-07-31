@@ -91,7 +91,7 @@ class Rfid extends SerialPort {
           }
         });
         state = nextState;
-        console.console.log({ state });
+        console.log({ state });
       }
     }
   }
