@@ -21,6 +21,7 @@
   "homepage": "https://github.com/NoOneBehind/changsul#readme",
   "dependencies": {
     "@serialport/parser-regex": "^9.0.0",
+    "firebase": "^7.19.0",
     "lodash": "^4.17.19",
     "nanotimer": "^0.3.15",
     "onoff": "^6.0.0",
