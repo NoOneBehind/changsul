@@ -1,8 +1,67 @@
+/* eslint-disable no-await-in-loop */
+import readline from 'readline';
+
 import { createChildren, createTiger } from './player';
 
+const MAX_MOVEMENT = 2;
 // 플레이어는 4명으로 고정이라 가정
 const PLAYER_NUM = 4;
 const TIGER_INDEX = (Math.round(Math.random() * 10)) % 4;
 
-const players = Array(PLAYER_NUM).fill(null).map((v, idx) => (
-  idx === TIGER_INDEX ? createTiger(idx) : createChildren(idx)));
+const DOWN = 'down';
+const ENTER = 'return';
+const LEFT = 'left';
+const RIGHT = 'right';
+const UP = 'up';
+
+const readKeyInput = () => new Promise((resolve) => {
+  readline.emitKeypressEvents(process.stdin);
+  process.stdin.setRawMode(true);
+  process.stdin.once('keypress', (str, key) => {
+    if (key.ctrl && key.name === 'c') {
+      process.exit();
+    } else {
+      resolve(key.name);
+    }
+  });
+});
+
+const run = async () => {
+  const players = Array(PLAYER_NUM).fill(null).map((v, idx) => (
+    idx === TIGER_INDEX ? createTiger(idx) : createChildren(idx)));
+  let alivePlayerNum = 4;
+
+  for (;;) {
+    for (let i = 0; i < PLAYER_NUM; i += 1) {
+      for (let movementCount = 0; movementCount < MAX_MOVEMENT; movementCount += 1) {
+        const input = await readKeyInput();
+        if (input === ENTER) {
+          break;
+        }
+
+        switch (input) {
+          case UP:
+            console.log(input);
+            await players[i].moveUp();
+            break;
+          case DOWN:
+            await players[i].moveDown();
+            break;
+          case LEFT:
+            await players[i].moveLeft();
+            break;
+          case RIGHT:
+            await players[i].moveRight();
+            break;
+          default:
+            console.log('Invalid Key!');
+            console.log('Try Again');
+            movementCount -= 1;
+            break;
+        }
+      }
+    }
+  }
+};
+
+run();
