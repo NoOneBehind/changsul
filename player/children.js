@@ -1,9 +1,14 @@
+import { write } from '../database';
+
 import Player from './base';
 
 class Children extends Player {
-  constructor (playerIndex) {
+  constructor(playerIndex) {
     super(playerIndex);
     this.isTiger = false;
+    // dev-web
+    write(this.playerIndex, { isTiger: this.isTiger });
+    //
   }
 }
 
