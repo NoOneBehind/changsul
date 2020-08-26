@@ -42,15 +42,35 @@ const run = async () => {
         switch (input) {
           case UP:
             console.log(input);
+            if (players[i].checkUpWall()) {
+              console.log('Invalid Movement');
+              movementCount -= 1;
+              break;
+            }
             await players[i].moveUp();
             break;
           case DOWN:
+            if (players[i].checkDownWall()) {
+              console.log('Invalid Movement');
+              movementCount -= 1;
+              break;
+            }
             await players[i].moveDown();
             break;
           case LEFT:
+            if (players[i].checkLeftWall()) {
+              console.log('Invalid Movement');
+              movementCount -= 1;
+              break;
+            }
             await players[i].moveLeft();
             break;
           case RIGHT:
+            if (players[i].checkRightWall()) {
+              console.log('Invalid Movement');
+              movementCount -= 1;
+              break;
+            }
             await players[i].moveRight();
             break;
           default:
