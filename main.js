@@ -46,11 +46,19 @@ const run = async () => {
               console.log('Invalid Movement');
               movementCount -= 1;
               break;
+            } else if (checkUpNearByPlayer(players, i)){
+              console.log('Invalid Movement');
+              movementCount -= 1;
+              break;
             }
             await players[i].moveUp();
             break;
           case DOWN:
             if (players[i].checkDownWall()) {
+              console.log('Invalid Movement');
+              movementCount -= 1;
+              break;
+            } else if (checkDownNearByPlayer(players, i)){
               console.log('Invalid Movement');
               movementCount -= 1;
               break;
@@ -62,11 +70,19 @@ const run = async () => {
               console.log('Invalid Movement');
               movementCount -= 1;
               break;
+            } else if (checkLeftNearByPlayer(players, i)){
+              console.log('Invalid Movement');
+              movementCount -= 1;
+              break;
             }
             await players[i].moveLeft();
             break;
           case RIGHT:
             if (players[i].checkRightWall()) {
+              console.log('Invalid Movement');
+              movementCount -= 1;
+              break;
+            } else if (checkRightNearByPlayer(players, i)){
               console.log('Invalid Movement');
               movementCount -= 1;
               break;
