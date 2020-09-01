@@ -14,6 +14,12 @@ const LEFT = 'left';
 const RIGHT = 'right';
 const UP = 'up';
 
+const killTheChild = (child) => {
+  child.setIsAlive(false);
+};
+
+
+
 const readKeyInput = () => new Promise((resolve) => {
   readline.emitKeypressEvents(process.stdin);
   process.stdin.setRawMode(true);
@@ -47,6 +53,9 @@ const run = async () => {
               movementCount -= 1;
               break;
             } else if (checkUpNearByPlayer(players, i)){
+              if (players[i].getIsTiger()){
+                killTheChild(checkUpNearByPlayer(players, i));
+              }
               console.log('Invalid Movement');
               movementCount -= 1;
               break;
@@ -59,6 +68,9 @@ const run = async () => {
               movementCount -= 1;
               break;
             } else if (checkDownNearByPlayer(players, i)){
+              if (players[i].getIsTiger()){
+                killTheChild(checkDownNearByPlayer(players, i));
+              }
               console.log('Invalid Movement');
               movementCount -= 1;
               break;
@@ -71,6 +83,9 @@ const run = async () => {
               movementCount -= 1;
               break;
             } else if (checkLeftNearByPlayer(players, i)){
+              if (players[i].getIsTiger()){
+                killTheChild(checkLeftNearByPlayer(players, i));
+              }
               console.log('Invalid Movement');
               movementCount -= 1;
               break;
@@ -83,6 +98,9 @@ const run = async () => {
               movementCount -= 1;
               break;
             } else if (checkRightNearByPlayer(players, i)){
+              if (players[i].getIsTiger()){
+                killTheChild(checkRightNearByPlayer(players, i));
+              }
               console.log('Invalid Movement');
               movementCount -= 1;
               break;
