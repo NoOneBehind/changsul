@@ -16,6 +16,7 @@ const UP = 'up';
 
 const killTheChild = (child) => {
   child.setIsAlive(false);
+//move the dead child
 };
 
 
@@ -53,12 +54,15 @@ const run = async () => {
               movementCount -= 1;
               break;
             } else if (checkUpNearByPlayer(players, i)){
-              if (players[i].getIsTiger()){
+                if (players[i].getIsTiger()){
                 killTheChild(checkUpNearByPlayer(players, i));
-              }
-              console.log('Invalid Movement');
-              movementCount -= 1;
-              break;
+                await players[i].moveUp();
+                break;
+                } else { 
+                    console.log('Invalid Movement');
+                    movementCount -= 1;
+                    break;
+                  } 
             }
             await players[i].moveUp();
             break;
@@ -70,10 +74,13 @@ const run = async () => {
             } else if (checkDownNearByPlayer(players, i)){
               if (players[i].getIsTiger()){
                 killTheChild(checkDownNearByPlayer(players, i));
-              }
-              console.log('Invalid Movement');
-              movementCount -= 1;
-              break;
+                await players[i].moveDown();
+                break;
+              } else {
+                  console.log('Invalid Movement');
+                  movementCount -= 1;
+                  break;
+                }
             }
             await players[i].moveDown();
             break;
@@ -85,10 +92,13 @@ const run = async () => {
             } else if (checkLeftNearByPlayer(players, i)){
               if (players[i].getIsTiger()){
                 killTheChild(checkLeftNearByPlayer(players, i));
-              }
-              console.log('Invalid Movement');
-              movementCount -= 1;
-              break;
+                await players[i].moveLeft();
+                break;
+              } else {
+                  console.log('Invalid Movement');
+                  movementCount -= 1;
+                  break;
+                }
             }
             await players[i].moveLeft();
             break;
@@ -100,11 +110,14 @@ const run = async () => {
             } else if (checkRightNearByPlayer(players, i)){
               if (players[i].getIsTiger()){
                 killTheChild(checkRightNearByPlayer(players, i));
-              }
-              console.log('Invalid Movement');
-              movementCount -= 1;
-              break;
-            }
+                await players[i].moveRight();
+                break;
+              } else {
+                  console.log('Invalid Movement');
+                  movementCount -= 1;
+                  break;
+                }
+            } 
             await players[i].moveRight();
             break;
           default:
