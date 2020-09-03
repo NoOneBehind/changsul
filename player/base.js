@@ -22,27 +22,39 @@ export default class Player {
   }
 
   checkDownWall() {
-    if ((this.xPos+DIRECTION_FACTOR[(this.playerIndex + 2) % 4])>5 || (this.yPos+DIRECTION_FACTOR[(this.playerIndex + 3) % 4])>5) {
+    if ((this.xPos + DIRECTION_FACTOR[(this.playerIndex + 2) % 4]) > 5
+      || (this.yPos + DIRECTION_FACTOR[(this.playerIndex + 3) % 4]) > 5) {
       return true;
-    } else return false;
+    }
+
+    return false;
   }
 
   checkLeftWall() {
-    if ((this.xPos+DIRECTION_FACTOR[(this.playerIndex + 3) % 4])>5 || (this.yPos+DIRECTION_FACTOR[(this.playerIndex) % 4])>5) {
+    if ((this.xPos + DIRECTION_FACTOR[(this.playerIndex + 3) % 4]) > 5
+      || (this.yPos + DIRECTION_FACTOR[(this.playerIndex) % 4]) > 5) {
       return true;
-    } else return false;
+    }
+
+    return false;
   }
 
   checkRightWall() {
-    if ((this.xPos+DIRECTION_FACTOR[(this.playerIndex + 1) % 4])>5 || (this.yPos+DIRECTION_FACTOR[(this.playerIndex + 2) % 4])>5) {
+    if ((this.xPos + DIRECTION_FACTOR[(this.playerIndex + 1) % 4]) > 5
+      || (this.yPos + DIRECTION_FACTOR[(this.playerIndex + 2) % 4]) > 5) {
       return true;
-    } else return false;
+    }
+
+    return false;
   }
 
   checkUpWall() {
-    if ((this.xPos+DIRECTION_FACTOR[(this.playerIndex) % 4])>5 || (this.yPos+DIRECTION_FACTOR[(this.playerIndex + 1) % 4])>5) {
+    if ((this.xPos + DIRECTION_FACTOR[(this.playerIndex) % 4]) > 5
+      || (this.yPos + DIRECTION_FACTOR[(this.playerIndex + 1) % 4]) > 5) {
       return true;
-    } else return false;
+    }
+
+    return false;
   }
 
   getIsAlive() {
@@ -68,7 +80,7 @@ export default class Player {
   getYPos() {
     return this.yPos;
   }
-  
+
   async moveDown() {
     this.xPos += DIRECTION_FACTOR[(this.playerIndex + 2) % 4];
     this.yPos += DIRECTION_FACTOR[(this.playerIndex + 3) % 4];

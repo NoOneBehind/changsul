@@ -1,6 +1,10 @@
+/* eslint-disable no-console */
 /* eslint-disable no-await-in-loop */
 import readline from 'readline';
 
+import {
+  checkDownNearByPlayer, checkLeftNearByPlayer, checkRightNearByPlayer, checkUpNearByPlayer,
+} from './logic/checkNearByPlayer';
 import { createChildren, createTiger } from './player';
 
 const MAX_MOVEMENT = 2;
@@ -16,10 +20,8 @@ const UP = 'up';
 
 const killTheChild = (child) => {
   child.setIsAlive(false);
-//move the dead child
+  // move the dead child
 };
-
-
 
 const readKeyInput = () => new Promise((resolve) => {
   readline.emitKeypressEvents(process.stdin);
@@ -36,7 +38,6 @@ const readKeyInput = () => new Promise((resolve) => {
 const run = async () => {
   const players = Array(PLAYER_NUM).fill(null).map((v, idx) => (
     idx === TIGER_INDEX ? createTiger(idx) : createChildren(idx)));
-  let alivePlayerNum = 4;
 
   for (;;) {
     for (let i = 0; i < PLAYER_NUM; i += 1) {
@@ -48,21 +49,20 @@ const run = async () => {
 
         switch (input) {
           case UP:
-            console.log(input);
             if (players[i].checkUpWall()) {
               console.log('Invalid Movement');
               movementCount -= 1;
               break;
-            } else if (checkUpNearByPlayer(players, i)){
-                if (players[i].getIsTiger()){
+            } else if (checkUpNearByPlayer(players, i)) {
+              if (players[i].getIsTiger()) {
                 killTheChild(checkUpNearByPlayer(players, i));
                 await players[i].moveUp();
                 break;
-                } else { 
-                    console.log('Invalid Movement');
-                    movementCount -= 1;
-                    break;
-                  } 
+              } else {
+                console.log('Invalid Movement');
+                movementCount -= 1;
+                break;
+              }
             }
             await players[i].moveUp();
             break;
@@ -71,16 +71,16 @@ const run = async () => {
               console.log('Invalid Movement');
               movementCount -= 1;
               break;
-            } else if (checkDownNearByPlayer(players, i)){
-              if (players[i].getIsTiger()){
+            } else if (checkDownNearByPlayer(players, i)) {
+              if (players[i].getIsTiger()) {
                 killTheChild(checkDownNearByPlayer(players, i));
                 await players[i].moveDown();
                 break;
               } else {
-                  console.log('Invalid Movement');
-                  movementCount -= 1;
-                  break;
-                }
+                console.log('Invalid Movement');
+                movementCount -= 1;
+                break;
+              }
             }
             await players[i].moveDown();
             break;
@@ -89,16 +89,16 @@ const run = async () => {
               console.log('Invalid Movement');
               movementCount -= 1;
               break;
-            } else if (checkLeftNearByPlayer(players, i)){
-              if (players[i].getIsTiger()){
+            } else if (checkLeftNearByPlayer(players, i)) {
+              if (players[i].getIsTiger()) {
                 killTheChild(checkLeftNearByPlayer(players, i));
                 await players[i].moveLeft();
                 break;
               } else {
-                  console.log('Invalid Movement');
-                  movementCount -= 1;
-                  break;
-                }
+                console.log('Invalid Movement');
+                movementCount -= 1;
+                break;
+              }
             }
             await players[i].moveLeft();
             break;
@@ -107,17 +107,17 @@ const run = async () => {
               console.log('Invalid Movement');
               movementCount -= 1;
               break;
-            } else if (checkRightNearByPlayer(players, i)){
-              if (players[i].getIsTiger()){
+            } else if (checkRightNearByPlayer(players, i)) {
+              if (players[i].getIsTiger()) {
                 killTheChild(checkRightNearByPlayer(players, i));
                 await players[i].moveRight();
                 break;
               } else {
-                  console.log('Invalid Movement');
-                  movementCount -= 1;
-                  break;
-                }
-            } 
+                console.log('Invalid Movement');
+                movementCount -= 1;
+                break;
+              }
+            }
             await players[i].moveRight();
             break;
           default:
