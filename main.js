@@ -6,6 +6,7 @@ import {
   checkDownNearByPlayer, checkLeftNearByPlayer, checkRightNearByPlayer, checkUpNearByPlayer,
 } from './logic/checkNearByPlayer';
 import { createChildren, createTiger } from './player';
+import { createXYPlotter } from './euipments/motor';
 
 const MAX_MOVEMENT = 2;
 // 플레이어는 4명으로 고정이라 가정
@@ -20,6 +21,7 @@ const UP = 'up';
 
 const killTheChild = (child) => {
   child.setIsAlive(false);
+  console.log('Child is killed!');
   // move the dead child
 };
 
@@ -39,8 +41,13 @@ const run = async () => {
   const players = Array(PLAYER_NUM).fill(null).map((v, idx) => (
     idx === TIGER_INDEX ? createTiger(idx) : createChildren(idx)));
 
+  const XYPlotter = createXYPlotter({ path: '/dev/ttyUSBO' });
+  await XYPlotter.open();
+
   for (;;) {
     for (let i = 0; i < PLAYER_NUM; i += 1) {
+      // 전자석 OFF
+      await XYPlotter.moveTo(players[i].getXPos(), players[i].getYPos());
       for (let movementCount = 0; movementCount < MAX_MOVEMENT; movementCount += 1) {
         const input = await readKeyInput();
         if (input === ENTER) {
@@ -55,7 +62,7 @@ const run = async () => {
               break;
             } else if (checkUpNearByPlayer(players, i)) {
               if (players[i].getIsTiger()) {
-                killTheChild(checkUpNearByPlayer(players, i));
+                await killTheChild(checkUpNearByPlayer(players, i));
                 await players[i].moveUp();
                 break;
               } else {
@@ -65,6 +72,9 @@ const run = async () => {
               }
             }
             await players[i].moveUp();
+            // 전자석 ON
+            await XYPlotter.moveTo(players[i].getXPos(), players[i].getYPos());
+            // 전자석 OFF
             break;
           case DOWN:
             if (players[i].checkDownWall()) {
@@ -83,6 +93,9 @@ const run = async () => {
               }
             }
             await players[i].moveDown();
+            // 전자석 ON
+            await XYPlotter.moveTo(players[i].getXPos(), players[i].getYPos());
+            // 전자석 OFF
             break;
           case LEFT:
             if (players[i].checkLeftWall()) {
@@ -101,6 +114,9 @@ const run = async () => {
               }
             }
             await players[i].moveLeft();
+            // 전자석 ON
+            await XYPlotter.moveTo(players[i].getXPos(), players[i].getYPos());
+            // 전자석 OFF
             break;
           case RIGHT:
             if (players[i].checkRightWall()) {
@@ -119,6 +135,9 @@ const run = async () => {
               }
             }
             await players[i].moveRight();
+            // 전자석 ON
+            await XYPlotter.moveTo(players[i].getXPos(), players[i].getYPos());
+            // 전자석 OFF
             break;
           default:
             console.log('Invalid Key!');
@@ -129,6 +148,7 @@ const run = async () => {
       }
     }
   }
+  await XYPlotter.close();
 };
 
 run();

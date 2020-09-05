@@ -7,7 +7,14 @@ class Children extends Player {
     super(playerIndex);
     this.isTiger = false;
     // dev-web
-    write(this.playerIndex, { isTiger: this.isTiger });
+    write(this.playerIndex, {
+      isAlive: this.isAlive,
+      isTiger: this.isTiger,
+      rope: this.rope,
+      playerIndex: this.playerIndex,
+      xPos: this.xPos,
+      yPos: this.yPos,
+    });
     //
   }
 }
