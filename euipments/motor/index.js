@@ -1,5 +1,5 @@
-import createMotor from './motor';
+import createXYPoltter from './XYPlotter';
 
-export default { createMotor };
+export default { createXYPoltter };
 
-export { createMotor };
+export { createXYPoltter };
