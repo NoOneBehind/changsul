@@ -1,5 +1,5 @@
-import createXYPoltter from './XYPlotter';
+import createXYPlotter from './XYPlotter';
 
-export default { createXYPoltter };
+export default { createXYPlotter };
 
-export { createXYPoltter };
+export { createXYPlotter };
