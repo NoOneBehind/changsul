@@ -9,7 +9,7 @@ const DONE = 'Done';
 
 class XYPlotter extends SerialPort {
   constructor(connection) {
-    super({ connection, commandEnter: '\r' });
+    super({ connection, commandEnter: '\r', maxRetry: 10 });
     this.regex = '\r';
   }
 
@@ -18,7 +18,11 @@ class XYPlotter extends SerialPort {
   }
 
   async moveTo(xPos, yPos) {
-    const { data } = await this.writeWithRetry(`MV ${xPos} ${yPos}`, 100);
+    const [x, y] = await this.getCurrentPosition();
+    if (x === xPos && y === yPos) {
+      return true;
+    }
+    const { data } = await this.writeWithRetry(`MV ${xPos} ${yPos}`, 500);
     if (data === ACK) {
       return (await this.read() === DONE);
     }
@@ -26,7 +30,7 @@ class XYPlotter extends SerialPort {
   }
 
   async getCurrentPosition() {
-    const { data } = await this.writeWithRetry('POS', 100);
+    const { data } = await this.writeWithRetry('POS', 500);
     const [, xPos, yPos] = data.split(' ');
     return [+xPos, +yPos];
   }
