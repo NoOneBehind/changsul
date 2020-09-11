@@ -7,6 +7,7 @@ import {
 } from './logic/checkNearByPlayer';
 import { createChildren, createTiger } from './player';
 import { createXYPlotter } from './euipments/motor';
+import { createButton } from './euipments/relay';
 
 const MAX_MOVEMENT = 2;
 // 플레이어는 4명으로 고정이라 가정
@@ -18,6 +19,8 @@ const ENTER = 'return';
 const LEFT = 'left';
 const RIGHT = 'right';
 const UP = 'up';
+
+const ELECTROMAGNET = 14;
 
 const killTheChild = (child) => {
   child.setIsAlive(false);
@@ -41,12 +44,16 @@ const run = async () => {
   const players = Array(PLAYER_NUM).fill(null).map((v, idx) => (
     idx === TIGER_INDEX ? createTiger(idx) : createChildren(idx)));
 
-  const XYPlotter = createXYPlotter({ path: '/dev/ttyUSBO' });
+  const XYPlotter = createXYPlotter({ path: '/dev/ttyUSB0' });
+  const button = createButton({ path: '/dev/ttyACM0' });
   await XYPlotter.open();
+  await button.open();
+  console.log('plotter is opened');
 
   for (;;) {
     for (let i = 0; i < PLAYER_NUM; i += 1) {
       // 전자석 OFF
+      await button.down(ELECTROMAGNET);
       await XYPlotter.moveTo(players[i].getXPos(), players[i].getYPos());
       for (let movementCount = 0; movementCount < MAX_MOVEMENT; movementCount += 1) {
         const input = await readKeyInput();
@@ -73,8 +80,10 @@ const run = async () => {
             }
             await players[i].moveUp();
             // 전자석 ON
+            await button.up(ELECTROMAGNET);
             await XYPlotter.moveTo(players[i].getXPos(), players[i].getYPos());
             // 전자석 OFF
+            await button.down(ELECTROMAGNET);
             break;
           case DOWN:
             if (players[i].checkDownWall()) {
@@ -94,8 +103,10 @@ const run = async () => {
             }
             await players[i].moveDown();
             // 전자석 ON
+            await button.up(ELECTROMAGNET);
             await XYPlotter.moveTo(players[i].getXPos(), players[i].getYPos());
             // 전자석 OFF
+            await button.down(ELECTROMAGNET);
             break;
           case LEFT:
             if (players[i].checkLeftWall()) {
@@ -115,8 +126,10 @@ const run = async () => {
             }
             await players[i].moveLeft();
             // 전자석 ON
+            await button.up(ELECTROMAGNET);
             await XYPlotter.moveTo(players[i].getXPos(), players[i].getYPos());
             // 전자석 OFF
+            await button.down(ELECTROMAGNET);
             break;
           case RIGHT:
             if (players[i].checkRightWall()) {
@@ -136,8 +149,10 @@ const run = async () => {
             }
             await players[i].moveRight();
             // 전자석 ON
+            await button.up(ELECTROMAGNET);
             await XYPlotter.moveTo(players[i].getXPos(), players[i].getYPos());
             // 전자석 OFF
+            await button.down(ELECTROMAGNET);
             break;
           default:
             console.log('Invalid Key!');
@@ -149,6 +164,7 @@ const run = async () => {
     }
   }
   await XYPlotter.close();
+  await button.close();
 };
 
 run();
