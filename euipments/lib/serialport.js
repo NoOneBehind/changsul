@@ -20,15 +20,16 @@ class SerialPort {
   }
 
   close() {
-    return new Promise((resolve, reject) => (
-      this.serialport.close((err) => (err ? reject(err) : resolve()))));
+    return new Promise((resolve, reject) =>
+      this.serialport.close((err) => (err ? reject(err) : resolve()))
+    );
   }
 
   open() {
     const { connection, openOptions } = this.config;
     return new Promise((resolve, reject) => {
       this.serialport = new _SerialPort(connection.path, { autoOpen: false, ...openOptions });
-      this.serialport.open((err) => (err ? reject(err) : resolve()));
+      this.serialport.open((err) => (err ? reject(err) : setTimeout(() => resolve(), 2000)));
     });
   }
 

@@ -17,11 +17,11 @@ class Button extends SerialPort {
   }
 
   up(ch) {
-    return this.writeWithRetry(`RY ${[].concat(ch).join(' ')} 1`, 500);
+    return this.write(`RY ${[].concat(ch).join(' ')} 1`);
   }
 
   down(ch) {
-    return this.writeWithRetry(`RY ${[].concat(ch).join(' ')} 0`, 500);
+    return this.write(`RY ${[].concat(ch).join(' ')} 0`);
   }
 }
 

@@ -2,7 +2,12 @@ import { write } from '../database';
 import { XYPlotter } from '../euipments/motor';
 
 const DIRECTION_FACTOR = [1, 0, -1, 0];
-const START_POS = [[0, 0], [0, 5], [5, 5], [5, 0]];
+const START_POS = [
+  [0, 0],
+  [0, 5],
+  [5, 5],
+  [5, 0],
+];
 
 export default class Player {
   constructor(playerIndex) {
@@ -14,10 +19,12 @@ export default class Player {
   }
 
   checkDownWall() {
-    if ((this.xPos + DIRECTION_FACTOR[(this.playerIndex + 2) % 4]) > 5
-      || (this.yPos + DIRECTION_FACTOR[(this.playerIndex + 3) % 4]) > 5
-      || (this.xPos + DIRECTION_FACTOR[(this.playerIndex + 2) % 4]) < 0
-      || (this.yPos + DIRECTION_FACTOR[(this.playerIndex + 3) % 4]) < 0) {
+    if (
+      this.xPos + DIRECTION_FACTOR[(this.playerIndex + 2) % 4] > 5 ||
+      this.yPos + DIRECTION_FACTOR[(this.playerIndex + 3) % 4] > 5 ||
+      this.xPos + DIRECTION_FACTOR[(this.playerIndex + 2) % 4] < 0 ||
+      this.yPos + DIRECTION_FACTOR[(this.playerIndex + 3) % 4] < 0
+    ) {
       return true;
     }
 
@@ -25,10 +32,12 @@ export default class Player {
   }
 
   checkLeftWall() {
-    if ((this.xPos + DIRECTION_FACTOR[(this.playerIndex + 3) % 4]) > 5
-      || (this.yPos + DIRECTION_FACTOR[(this.playerIndex) % 4]) > 5
-      || (this.xPos + DIRECTION_FACTOR[(this.playerIndex + 3) % 4]) < 0
-      || (this.yPos + DIRECTION_FACTOR[(this.playerIndex) % 4]) < 0) {
+    if (
+      this.xPos + DIRECTION_FACTOR[(this.playerIndex + 3) % 4] > 5 ||
+      this.yPos + DIRECTION_FACTOR[this.playerIndex % 4] > 5 ||
+      this.xPos + DIRECTION_FACTOR[(this.playerIndex + 3) % 4] < 0 ||
+      this.yPos + DIRECTION_FACTOR[this.playerIndex % 4] < 0
+    ) {
       return true;
     }
 
@@ -36,10 +45,12 @@ export default class Player {
   }
 
   checkRightWall() {
-    if ((this.xPos + DIRECTION_FACTOR[(this.playerIndex + 1) % 4]) > 5
-      || (this.yPos + DIRECTION_FACTOR[(this.playerIndex + 2) % 4]) > 5
-      || (this.xPos + DIRECTION_FACTOR[(this.playerIndex + 1) % 4]) < 0
-      || (this.yPos + DIRECTION_FACTOR[(this.playerIndex + 2) % 4]) < 0) {
+    if (
+      this.xPos + DIRECTION_FACTOR[(this.playerIndex + 1) % 4] > 5 ||
+      this.yPos + DIRECTION_FACTOR[(this.playerIndex + 2) % 4] > 5 ||
+      this.xPos + DIRECTION_FACTOR[(this.playerIndex + 1) % 4] < 0 ||
+      this.yPos + DIRECTION_FACTOR[(this.playerIndex + 2) % 4] < 0
+    ) {
       return true;
     }
 
@@ -47,10 +58,12 @@ export default class Player {
   }
 
   checkUpWall() {
-    if ((this.xPos + DIRECTION_FACTOR[(this.playerIndex) % 4]) > 5
-      || (this.yPos + DIRECTION_FACTOR[(this.playerIndex + 1) % 4]) > 5
-      || (this.xPos + DIRECTION_FACTOR[(this.playerIndex) % 4]) < 0
-      || (this.yPos + DIRECTION_FACTOR[(this.playerIndex + 1) % 4]) < 0) {
+    if (
+      this.xPos + DIRECTION_FACTOR[this.playerIndex % 4] > 5 ||
+      this.yPos + DIRECTION_FACTOR[(this.playerIndex + 1) % 4] > 5 ||
+      this.xPos + DIRECTION_FACTOR[this.playerIndex % 4] < 0 ||
+      this.yPos + DIRECTION_FACTOR[(this.playerIndex + 1) % 4] < 0
+    ) {
       return true;
     }
 
@@ -92,7 +105,7 @@ export default class Player {
 
   async moveLeft() {
     this.xPos += DIRECTION_FACTOR[(this.playerIndex + 3) % 4];
-    this.yPos += DIRECTION_FACTOR[(this.playerIndex)];
+    this.yPos += DIRECTION_FACTOR[this.playerIndex];
     // TODO: move xyPlotter
     // dev-web
     await write(this.playerIndex, { xPos: this.xPos, yPos: this.yPos });
@@ -109,7 +122,7 @@ export default class Player {
   }
 
   async moveUp() {
-    this.xPos += DIRECTION_FACTOR[(this.playerIndex)];
+    this.xPos += DIRECTION_FACTOR[this.playerIndex];
     this.yPos += DIRECTION_FACTOR[(this.playerIndex + 1) % 4];
     // TODO: move xyPlotter
 

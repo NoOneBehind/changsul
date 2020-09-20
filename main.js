@@ -3,7 +3,10 @@
 import readline from 'readline';
 
 import {
-  checkDownNearByPlayer, checkLeftNearByPlayer, checkRightNearByPlayer, checkUpNearByPlayer,
+  checkDownNearByPlayer,
+  checkLeftNearByPlayer,
+  checkRightNearByPlayer,
+  checkUpNearByPlayer,
 } from './logic/checkNearByPlayer';
 import { createChildren, createTiger } from './player';
 import { createXYPlotter } from './euipments/motor';
@@ -12,7 +15,7 @@ import { createButton } from './euipments/relay';
 const MAX_MOVEMENT = 2;
 // 플레이어는 4명으로 고정이라 가정
 const PLAYER_NUM = 4;
-const TIGER_INDEX = (Math.round(Math.random() * 10)) % 4;
+const TIGER_INDEX = Math.round(Math.random() * 10) % 4;
 
 const DOWN = 'down';
 const ENTER = 'return';
@@ -28,21 +31,23 @@ const killTheChild = (child) => {
   // move the dead child
 };
 
-const readKeyInput = () => new Promise((resolve) => {
-  readline.emitKeypressEvents(process.stdin);
-  process.stdin.setRawMode(true);
-  process.stdin.once('keypress', (str, key) => {
-    if (key.ctrl && key.name === 'c') {
-      process.exit();
-    } else {
-      resolve(key.name);
-    }
+const readKeyInput = () =>
+  new Promise((resolve) => {
+    readline.emitKeypressEvents(process.stdin);
+    process.stdin.setRawMode(true);
+    process.stdin.once('keypress', (str, key) => {
+      if (key.ctrl && key.name === 'c') {
+        process.exit();
+      } else {
+        resolve(key.name);
+      }
+    });
   });
-});
 
 const run = async () => {
-  const players = Array(PLAYER_NUM).fill(null).map((v, idx) => (
-    idx === TIGER_INDEX ? createTiger(idx) : createChildren(idx)));
+  const players = Array(PLAYER_NUM)
+    .fill(null)
+    .map((v, idx) => (idx === TIGER_INDEX ? createTiger(idx) : createChildren(idx)));
 
   const XYPlotter = createXYPlotter({ path: '/dev/ttyUSB0' });
   const button = createButton({ path: '/dev/ttyACM0' });

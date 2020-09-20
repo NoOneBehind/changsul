@@ -22,15 +22,15 @@ class XYPlotter extends SerialPort {
     if (x === xPos && y === yPos) {
       return true;
     }
-    const { data } = await this.writeWithRetry(`MV ${xPos} ${yPos}`, 500);
+    const { data } = await this.write(`MV ${xPos} ${yPos}`, 500);
     if (data === ACK) {
-      return (await this.read() === DONE);
+      return (await this.read()) === DONE;
     }
     return false;
   }
 
   async getCurrentPosition() {
-    const { data } = await this.writeWithRetry('POS', 500);
+    const { data } = await this.write('POS', 500);
     const [, xPos, yPos] = data.split(' ');
     return [+xPos, +yPos];
   }

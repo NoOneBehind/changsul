@@ -17,7 +17,11 @@ const firebaseConfig = {
 firebase.initializeApp(firebaseConfig);
 const database = firebase.database();
 
-export const readAll = () => database.ref('player').once('value').then((value) => value.val());
+export const readAll = () =>
+  database
+    .ref('player')
+    .once('value')
+    .then((value) => value.val());
 
 export const write = async (playerIndex, data) => {
   const prev = await database.ref(`/player/${playerIndex}`).once('value');
