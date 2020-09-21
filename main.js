@@ -31,18 +31,17 @@ const killTheChild = (child) => {
   // move the dead child
 };
 
-const readKeyInput = () =>
-  new Promise((resolve) => {
-    readline.emitKeypressEvents(process.stdin);
-    process.stdin.setRawMode(true);
-    process.stdin.once('keypress', (str, key) => {
-      if (key.ctrl && key.name === 'c') {
-        process.exit();
-      } else {
-        resolve(key.name);
-      }
-    });
+const readKeyInput = () => new Promise((resolve) => {
+  readline.emitKeypressEvents(process.stdin);
+  process.stdin.setRawMode(true);
+  process.stdin.once('keypress', (str, key) => {
+    if (key.ctrl && key.name === 'c') {
+      process.exit();
+    } else {
+      resolve(key.name);
+    }
   });
+});
 
 const run = async () => {
   const players = Array(PLAYER_NUM)
@@ -55,7 +54,7 @@ const run = async () => {
   await button.open();
   console.log('plotter is opened');
 
-  for (;;) {
+  for (; ;) {
     for (let i = 0; i < PLAYER_NUM; i += 1) {
       // 전자석 OFF
       await button.down(ELECTROMAGNET);

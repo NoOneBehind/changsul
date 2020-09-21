@@ -22,7 +22,7 @@ class XYPlotter extends SerialPort {
     if (x === xPos && y === yPos) {
       return true;
     }
-    const { data } = await this.write(`MV ${xPos} ${yPos}`, 500);
+    const data = await this.write(`MV ${xPos} ${yPos}`);
     if (data === ACK) {
       return (await this.read()) === DONE;
     }
@@ -30,7 +30,7 @@ class XYPlotter extends SerialPort {
   }
 
   async getCurrentPosition() {
-    const { data } = await this.write('POS', 500);
+    const data = await this.write('POS');
     const [, xPos, yPos] = data.split(' ');
     return [+xPos, +yPos];
   }
